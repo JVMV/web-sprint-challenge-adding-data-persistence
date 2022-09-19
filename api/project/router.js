@@ -5,8 +5,14 @@ const Project = require('./model')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-    const request = await Project.find()
-    res.status(200).json(request)
+    await Project.find()
+        .then(request => {
+            const returnedRequest = request.map(project => {
+                return {...project, project_completed: project.project_completed === 1 ? true : false}
+            })
+            console.log(returnedRequest)
+            res.status(200).json(returnedRequest)
+        })
 })
 
 router.post('/', async (req, res) => {
@@ -17,8 +23,21 @@ router.post('/', async (req, res) => {
     ) {
         res.status(400).json({message: 'project name required'})
     } else {
-        const newProject = await Project.create(req.body)
-        res.status(201).json(newProject)
+        await Project.create(req.body)
+            .then(newProject => {
+                 res.status(201).json({...newProject[0], project_completed: newProject[0].project_completed === 1 ? true : false})
+            })
+
+        // const returnedProject = {
+        //     project_id: newProject.project_id,
+        //     project_name: newProject.project_name,
+        //     project_description: newProject.project_description,
+        //     project_completed: newProject.project_completed === 1 ? true : false
+        // }
+
+        // newProject.project_completed = newProject.project_completed === 1 ? true : false
+        // console.log(returnedProject)
+        // res.status(201).json(returnedProject)
     }
 })
 
