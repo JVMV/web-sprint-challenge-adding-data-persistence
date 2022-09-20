@@ -13,7 +13,14 @@ function create(resource) {
         })
 }
 
+function checkName(resourceName) {
+    return db('resources')
+        .select('resource_id')
+        .where('resource_name', resourceName)
+}
+
 module.exports = {
     find,
-    create
+    create,
+    checkName
 }

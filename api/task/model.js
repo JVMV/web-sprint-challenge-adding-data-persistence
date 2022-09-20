@@ -9,7 +9,6 @@ function create(task) {
         .insert(task)
         .then(([task_id]) => {
             return db('tasks')
-                .select('resource_name')
                 .where('task_id', task_id)
         })
 }

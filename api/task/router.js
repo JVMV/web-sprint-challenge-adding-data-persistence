@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
         res.status(400).json({message: 'description and project id required'})
     } else {
         const newTask = await Task.create(req.body)
-        res.status(201).json(newTask)
+        res.status(201).json(newTask.resource_name)
     }
 })
 

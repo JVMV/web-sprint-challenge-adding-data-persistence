@@ -16,9 +16,17 @@ router.post('/', async (req, res) => {
         || resource_name === null
     ) {
         res.status(400).json({message: 'resource_name required'})
-    } else{
-        const request = await Resource.create(req.body)
-        res.status(201).json(request)
+    } else {
+        const [check] = await Resource.checkName(resource_name)
+        console.log(check)
+        if(check) {
+            console.log(check)
+            res.status(400).json({message: 'resource name is not unique'})
+        } else {
+            console.log(check)
+            const [request] = await Resource.create(req.body)
+            res.status(201).json({resource_name: request.resource_name})
+            }
     }
 })
 
