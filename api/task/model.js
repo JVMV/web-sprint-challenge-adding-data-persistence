@@ -2,6 +2,8 @@ const db = require('../../data/dbConfig')
 
 function find() {
     return db('tasks')
+        .select('tasks.*', 'project_name', 'project_description')
+        .leftJoin('projects', 'projects.project_id', 'tasks.project_id')
 }
 
 function create(task) {
