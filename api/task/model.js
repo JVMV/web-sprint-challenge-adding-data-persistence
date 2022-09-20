@@ -15,7 +15,13 @@ function create(task) {
         })
 }
 
+function checkProjectId(project_id) {
+    return db('projects')
+        .where('project_id', project_id)
+}
+
 module.exports = {
     find,
-    create
+    create,
+    checkProjectId
 }

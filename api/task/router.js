@@ -22,9 +22,14 @@ router.post('/', async (req, res) => {
         console.log('failed', task_description, project_id)
         res.status(400).json({message: 'description and project id required'})
     } else {
-        const [newTask] = await Task.create(req.body)
-        const returnTask = {...newTask, task_completed: newTask.task_completed === 0 ? false : true}
-        res.status(201).json(returnTask)
+        const checkTask = await Task.checkProjectId(project_id)
+        if(checkTask.length === 0) {
+            res.status(404).json({message: `project_id ${project_id} not found`})
+        } else {
+            const [newTask] = await Task.create(req.body)
+            const returnTask = {...newTask, task_completed: newTask.task_completed === 0 ? false : true}
+            res.status(201).json(returnTask)
+        }
     }
 })
 
